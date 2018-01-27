@@ -1,45 +1,41 @@
-## Put comments here that give an overall description of what your
-## functions do
 
 ## Write a short comment describing this function
 
-makeCacheMatrix <- function(x = numeric()) {
+makeCacheMatrix <- function(x = matrix()) {
   #initiate the inverse variable
-  inverse <- NULL
-  
+  inv <- NULL
   #store matrix
-  setMatrix <- function(mat) {
-    x <<- mat
-    inverse <<- NULL
+  set <- function(y) {
+    x <<- y
+    inv <<- NULL
   }
-  
+  get <- function() x
   #basic get/set functions
-  setInverse <- function(inv) inverse <<- inv
-  getInverse <- function() inverse
-  getMatrix <- function() x
-  
+  setInverse <- function(inverse) inv <<- inverse
+  getInverse <- function() inv
   #list of functions
-  list(setMatrix = setMatrix, setInverse = setInverse, getInverse = getInverse, getMatrix = getMatrix)
-  
+  list(set = set,
+       get = get,
+       setInverse = setInverse,
+       getInverse = getInverse)
 }
 
 
 ## Write a short comment describing this function
 
-cacheSolve <- function(y, ...) {
+cacheSolve <- function(x, ...) {
   ## Return a matrix that is the inverse of 'x'
-  inverse <- y$getInverse()
+  inv <- x$getInverse()
   
   #if inverse has already been calculated, return it
-  if(!is.null(inverse)) {
-    message("getting cached data")
-    return(inverse)
+  if (!is.null(inv)) {
+    message("Getting Cached Information")
+    return(inv)
   }
   
   #if inverse hasn't been calculated, then calculate it, store it and return it
-  data <- y$getMatrix()
-  inverse <- solve(data)
-  y$setInverse(inverse)
-  inverse
+  mat <- x$get()
+  inv <- solve(mat, ...)
+  x$setInverse(inv)
+  inv
 }
-
